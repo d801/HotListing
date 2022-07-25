@@ -1,7 +1,16 @@
+using HotListing.API.Data;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//I'm letting the API know about the entity framework in order to use it to connect to the database. 1st, i'll define the connection string
+var ConnectionString = builder.Configuration.GetConnectionString("HotelListingDBConnectionString");
+builder.Services.AddDbContext<HotelListingDbContext>(options=>
+{
+    options.UseSqlServer(ConnectionString); //configuring the server i'm using  
+    
+    });
 // Add services to the container.
 
 builder.Services.AddControllers();
