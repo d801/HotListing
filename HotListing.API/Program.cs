@@ -1,4 +1,7 @@
+using HotListing.API.Configurations;
+using HotListing.API.Contracts;
 using HotListing.API.Data;
+using HotListing.API.Repository;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -27,6 +30,13 @@ builder.Services.AddCors(options =>
 //the configuration here represents the configuration files that is in the project starting with the jason files so eventually
 //i'm going to need to do some configuration in the json file
 builder.Host.UseSerilog((ctx,lc)=>lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
+
+
+builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>)); //register for generic repo
+builder.Services.AddScoped<ICountriesRepository,CountriesRepository>(); //register for specific repo
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
